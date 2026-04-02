@@ -37,8 +37,8 @@ const GARMENTS = [
   },
   {
     id: "suit",
-    title: "Suit",
-    description: "Tailored fit, professional look.",
+    title: "Ladies Suit",
+    description: "Kurta-pajama or kurti-pant ethnic set.",
     icon: <Briefcase className="h-5 w-5 text-amber-500" />,
   },
 ];
@@ -76,10 +76,10 @@ export default function Home() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          image: base64Image, 
+        body: JSON.stringify({
+          image: base64Image,
           garmentType: selectedGarment,
-          blousePattern: pattern 
+          blousePattern: pattern,
         }),
       });
 
@@ -100,6 +100,7 @@ export default function Home() {
         loadingStates={loadingSteps}
         loading={isGenerating}
         duration={1500}
+        loop={false}
       />
 
       <div className="w-full max-w-7xl mx-auto flex flex-col items-center text-center">
@@ -111,7 +112,8 @@ export default function Home() {
           className="text-4xl md:text-6xl lg:text-7xl font-bold font-sans tracking-tight max-w-4xl mx-auto"
         />
         <p className="mt-6 text-zinc-500 dark:text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto">
-          Upload your raw fabric and let our AI tailor craft stunning, photorealistic garments exclusively for you.
+          Upload your raw fabric and let our AI tailor craft stunning,
+          photorealistic garments exclusively for you.
         </p>
 
         <div className="w-full mt-16 flex flex-col items-center space-y-24">
@@ -119,59 +121,65 @@ export default function Home() {
             <UploadZone onUpload={setBase64Image} />
           </section>
 
-          {base64Image && results.length === 0 && !isGenerating && !garmentType && (
-            <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 w-full flex flex-col items-center">
-              <h2 className="text-3xl font-bold dark:text-white mb-8">
-                Select a Garment Style
-              </h2>
-              <BentoGrid className="w-full">
-                {GARMENTS.map((g) => (
-                  <BentoGridItem
-                    key={g.id}
-                    title={g.title}
-                    description={g.description}
-                    icon={g.icon}
-                    className="h-48 group-hover/bento:bg-zinc-100 cursor-pointer"
-                    onClick={() => {
-                      if (g.id === "blouse") {
-                        setGarmentType("blouse");
-                      } else {
-                        handleGenerate(g.id);
-                      }
-                    }}
-                  />
-                ))}
-              </BentoGrid>
-            </section>
-          )}
+          {base64Image &&
+            results.length === 0 &&
+            !isGenerating &&
+            !garmentType && (
+              <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 w-full flex flex-col items-center">
+                <h2 className="text-3xl font-bold dark:text-white mb-8">
+                  Select a Garment Style
+                </h2>
+                <BentoGrid className="w-full">
+                  {GARMENTS.map((g) => (
+                    <BentoGridItem
+                      key={g.id}
+                      title={g.title}
+                      description={g.description}
+                      icon={g.icon}
+                      className="h-48 group-hover/bento:bg-zinc-100 cursor-pointer"
+                      onClick={() => {
+                        if (g.id === "blouse") {
+                          setGarmentType("blouse");
+                        } else {
+                          handleGenerate(g.id);
+                        }
+                      }}
+                    />
+                  ))}
+                </BentoGrid>
+              </section>
+            )}
 
-          {base64Image && results.length === 0 && !isGenerating && garmentType === "blouse" && (
-            <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 w-full flex flex-col items-center max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold dark:text-white mb-4">
-                Select Blouse Pattern
-              </h2>
-              <p className="text-zinc-500 dark:text-zinc-400 mb-8">
-                Choose a specific pattern for your custom blouse.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-                {BLOUSE_PATTERNS.map((pattern) => (
-                  <button
-                    key={pattern}
-                    onClick={() => handleGenerate("blouse", pattern)}
-                    className="p-4 rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors flex items-center justify-center text-center font-medium shadow-sm hover:shadow-md"
-                  >
-                    {pattern}
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={() => setGarmentType(null)}
-                className="mt-12 px-6 py-2 border border-zinc-300 dark:border-zinc-700 rounded-full text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-              >
-                ← Back to Garments
-              </button>
-            </section>
-          )}
+          {base64Image &&
+            results.length === 0 &&
+            !isGenerating &&
+            garmentType === "blouse" && (
+              <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 w-full flex flex-col items-center max-w-4xl mx-auto">
+                <h2 className="text-3xl font-bold dark:text-white mb-4">
+                  Select Blouse Pattern
+                </h2>
+                <p className="text-zinc-500 dark:text-zinc-400 mb-8">
+                  Choose a specific pattern for your custom blouse.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+                  {BLOUSE_PATTERNS.map((pattern) => (
+                    <button
+                      key={pattern}
+                      onClick={() => handleGenerate("blouse", pattern)}
+                      className="p-4 rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors flex items-center justify-center text-center font-medium shadow-sm hover:shadow-md"
+                    >
+                      {pattern}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => setGarmentType(null)}
+                  className="mt-12 px-6 py-2 border border-zinc-300 dark:border-zinc-700 rounded-full text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  ← Back to Garments
+                </button>
+              </section>
+            )}
 
           {results.length > 0 && (
             <section className="flex flex-col items-center animate-in fade-in zoom-in-95 duration-700 w-full">
@@ -185,7 +193,8 @@ export default function Home() {
                   </p>
                 )}
                 <p className="text-zinc-500 mt-3">
-                  Click the heart to save your favorite designs to your wardrobe.
+                  Click the heart to save your favorite designs to your
+                  wardrobe.
                 </p>
               </div>
               <ResultsGallery images={results} />
