@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
 
     // ─── STEP 1: Deep fabric analysis with Gemini ────────────────────────
-    let fabricDesc = "deep maroon fabric with light diagonal ikat motifs";
+    let fabricDesc;
     try {
       const { GoogleGenerativeAI } = require("@google/generative-ai");
       const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
