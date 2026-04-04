@@ -4,6 +4,35 @@ import { Download, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const ResultsGallery = ({ images }: { images: string[] }) => {
+  const handleDownload = async (img: string, index: number) => {
+    // Check if Web Share API is available (Mobile feature)
+    if (navigator.share && navigator.canShare) {
+      try {
+        const response = await fetch(img);
+        const blob = await response.blob();
+        const file = new File([blob], `design-${index}.png`, {
+          type: blob.type,
+        });
+
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: "My Bespoke Design",
+            text: "Check out my new design from Nakshatra B&C!",
+          });
+          return; // Exit if share was successful
+        }
+      } catch (err) {
+        console.log("Share failed, falling back to download", err);
+      }
+    }
+
+    // Desktop/Fallback Download
+    const link = document.createElement("a");
+    link.href = img;
+    link.download = `nakshatra-design-${index}.png`;
+    link.click();
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mt-12 w-full">
       {images.map((img, idx) => (
@@ -21,13 +50,12 @@ export const ResultsGallery = ({ images }: { images: string[] }) => {
           ) : (
             <div className="w-full aspect-[4/5] animate-pulse bg-zinc-200 dark:bg-zinc-800" />
           )}
-          
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-6">
-            <button className="flex items-center space-x-2 text-white hover:text-rose-400 transition-colors">
-              <Heart className="w-6 h-6" />
-              <span className="font-medium text-sm">Save</span>
-            </button>
-            <button className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-full text-white transition-colors">
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100  duration-300 flex items-end justify-between p-6">
+            <button
+              onClick={() => handleDownload(img, idx)}
+              className="flex cursor-pointer items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-full text-white transition-colors"
+            >
               <Download className="w-4 h-4" />
               <span className="text-sm font-medium">HD</span>
             </button>
