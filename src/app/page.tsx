@@ -104,8 +104,8 @@ export default function Home() {
       />
 
       <div className="w-full max-w-7xl mx-auto flex flex-col items-center text-center">
-        <div className="inline-block border border-zinc-200 dark:border-white/10 rounded-full px-4 py-1 mb-6 bg-white dark:bg-zinc-900 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-          Welcome to the Future of Fashion
+        <div className="flex gap-2  border border-zinc-200 dark:border-white/10 rounded-full px-4 py-1 mb-6 bg-white dark:bg-zinc-900 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          <Sparkles size={18} /> Welcome to the Future of Fashion
         </div>
         <TextGenerateEffect
           words="Nakshatra B&C Virtual Design Studio"
